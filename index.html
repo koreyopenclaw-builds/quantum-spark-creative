@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Spark Creative | Your Clawbot Works 24/7 So You Don't Have To</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root { --primary: #2563eb; --secondary: #0f172a; --accent: #10b981; --white: #ffffff; --gray-50: #f9fafb; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-600: #475569; --gray-800: #1e293b; }
+        body { background: var(--white); color: var(--gray-800); line-height: 1.6; }
+        .hero { min-height: 100vh; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 50%, #e0f2fe 100%); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .hero::before { content: ''; position: absolute; top: -30%; left: -30%; width: 160%; height: 160%; background: radial-gradient(circle, rgba(37, 99, 235, 0.03) 0%, transparent 50%); animation: rotate 30s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .hero-content { text-align: center; z-index: 10; padding: 2rem; max-width: 1200px; }
+        .badge { display: inline-block; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.875rem; font-weight: 600; margin-bottom: 2rem; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; color: var(--secondary); margin-bottom: 1.5rem; line-height: 1.1; }
+        .hero h1 span { background: linear-gradient(135deg, var(--primary), #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-subtitle { font-size: 1.25rem; color: var(--gray-600); margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .clawbot-container { width: 320px; height: 380px; margin: 0 auto 2rem; position: relative; animation: float 4s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+        .clawbot-head { width: 200px; height: 180px; background: linear-gradient(145deg, #1e40af, #1e3a8a); border-radius: 40px 40px 30px 30px; margin: 0 auto; position: relative; box-shadow: 0 25px 60px rgba(30, 64, 175, 0.3), inset 0 -15px 30px rgba(0, 0, 0, 0.2); display: flex; align-items: center; justify-content: center; }
+        .clawbot-face { width: 160px; height: 100px; background: linear-gradient(180deg, #0f172a, #1e293b); border-radius: 20px; position: relative; display: flex; align-items: center; justify-content: center; gap: 25px; border: 2px solid #334155; }
+        .clawbot-eye { width: 40px; height: 50px; background: #10b981; border-radius: 50%; position: relative; animation: glow-eye 2s ease-in-out infinite; box-shadow: 0 0 25px #10b981, 0 0 50px #10b981; }
+        @keyframes glow-eye { 0%, 100% { box-shadow: 0 0 25px #10b981, 0 0 50px #10b981; } 50% { box-shadow: 0 0 35px #10b981, 0 0 70px #10b981; } }
+        .clawbot-eye::after { content: ''; position: absolute; width: 12px; height: 12px; background: white; border-radius: 50%; top: 10px; left: 10px; }
+        .clawbot-antenna { position: absolute; top: -35px; left: 50%; transform: translateX(-50%); width: 10px; height: 45px; background: linear-gradient(to top, #1e40af, #60a5fa); border-radius: 5px; }
+        .clawbot-antenna::before { content: ''; position: absolute; top: -18px; left: 50%; transform: translateX(-50%); width: 22px; height: 22px; background: #10b981; border-radius: 50%; box-shadow: 0 0 20px #10b981; animation: pulse-antenna 1.5s ease-in-out infinite; }
+        @keyframes pulse-antenna { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.2); } }
+        .clawbot-body { width: 180px; height: 140px; background: linear-gradient(145deg, #1e40af, #1e3a8a); border-radius: 35px 35px 25px 25px; margin: -15px auto 0; position: relative; box-shadow: 0 25px 60px rgba(30, 64, 175, 0.3); }
+        .clawbot-chest { width: 120px; height: 60px; background: #0f172a; border-radius: 15px; margin: 25px auto 0; display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .chest-light { width: 15px; height: 15px; border-radius: 50%; animation: blink-light 1s ease-in-out infinite; }
+        .chest-light.green { background: #10b981; box-shadow: 0 0 10px #10b981; }
+        .chest-light.blue { background: #3b82f6; box-shadow: 0 0 10px #3b82f6; animation-delay: 0.3s; }
+        .chest-light.purple { background: #8b5cf6; box-shadow: 0 0 10px #8b5cf6; animation-delay: 0.6s; }
+        @keyframes blink-light { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .clawbot-shoulders { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); width: 220px; height: 35px; background: linear-gradient(145deg, #1e40af, #1e3a8a); border-radius: 20px; }
+        .clawbot-collar { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); width: 35px; height: 8px; background: #cbd5e1; border-radius: 2px; }
+        .clawbot-tie { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 45px solid #dc2626; }
+        .cta-button { display: inline-block; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 1rem 2.5rem; border-radius: 50px; font-size: 1.125rem; font-weight: 700; text-decoration: none; box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3); transition: all 0.3s ease; }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 15px 50px rgba(37, 99, 235, 0.4); }
+        .trust-badges { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 2rem; }
+        .trust-badge { display: flex; align-items: center; gap: 0.5rem; color: var(--gray-600); font-size: 0.875rem; font-weight: 500; }
+        .trust-badge svg { width: 24px; height: 24px; fill: #10b981; }
+        .problem { padding: 5rem 2rem; background: var(--secondary); color: white; }
+        .problem-content { max-width: 1200px; margin: 0 auto; }
+        .problem h2 { font-size: 2.5rem; margin-bottom: 3rem; text-align: center; }
+        .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .problem-card { background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .problem-card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .problem-card h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .problem-card p { opacity: 0.7; font-size: 0.9375rem; }
+        .stats { padding: 5rem 2rem; background: var(--white); }
+        .stats-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .stat-card { text-align: center; padding: 2rem; background: var(--gray-50); border-radius: 20px; }
+        .stat-number { font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; }
+        .stat-label { font-size: 1rem; color: var(--gray-600); }
+        .roi { padding: 5rem 2rem; background: var(--gray-50); }
+        .roi-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .roi-text h2 { font-size: 2.5rem; color: var(--secondary); margin-bottom: 2rem; }
+        .roi-item { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--gray-200); }
+        .roi-highlight { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 2rem; border-radius: 20px; margin-top: 2rem; }
+        .roi-highlight h3 { font-size: 1rem; opacity: 0.9; margin-bottom: 0.5rem; }
+        .roi-highlight .amount { font-size: 3rem; font-weight: 800; }
+        .roi-chart-container { background: var(--white); padding: 2rem; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .how-it-works { padding: 5rem 2rem; background: var(--white); }
+        .section-header { text-align: center; max-width: 800px; margin: 0 auto 4rem; }
+        .section-header h2 { font-size: 2.5rem; color: var(--secondary); margin-bottom: 1rem; }
+        .steps-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .step-card { text-align: center; padding: 2rem; }
+        .step-number { width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: 700; margin: 0 auto 1rem; }
+        .step-card h3 { font-size: 1.125rem; margin-bottom: 0.5rem; color: var(--secondary); }
+        .step-card p { color: var(--gray-600); font-size: 0.875rem; }
+        .security { padding: 5rem 2rem; background: var(--secondary); color: white; }
+        .security-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .security h2 { font-size: 2.5rem; margin-bottom: 2rem; }
+        .security-list { list-style: none; }
+        .security-list li { padding: 1rem 0; display: flex; align-items: center; gap: 1rem; font-size: 1.125rem; }
+        .security-list li::before { content: '✓'; color: var(--accent); font-weight: 700; font-size: 1.25rem; }
+        .security-features { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .security-feature { background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 15px; text-align: center; }
+        .security-feature-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .security-feature h4 { font-size: 1rem; margin-bottom: 0.25rem; }
+        .security-feature p { font-size: 0.875rem; opacity: 0.7; }
+        .testimonials { padding: 5rem 2rem; background: var(--gray-50); }
+        .testimonial-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .testimonial-card { background: var(--white); padding: 2rem; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .testimonial-stars { color: #f59e0b; font-size: 1.25rem; margin-bottom: 1rem; }
+        .testimonial-text { font-style: italic; color: var(--gray-600); margin-bottom: 1.5rem; line-height: 1.7; }
+        .testimonial-author { font-weight: 700; color: var(--secondary); }
+        .testimonial-role { font-size: 0.875rem; color: var(--gray-600); }
+        .pricing { padding: 5rem 2rem; background: var(--white); }
+        .pricing-cards { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .pricing-card { background: var(--gray-50); border-radius: 20px; padding: 3rem; text-align: center; border: 2px solid var(--gray-200); }
+        .pricing-card.featured { border-color: var(--primary); background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%); }
+        .pricing-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .pricing-amount { font-size: 3rem; font-weight: 800; color: var(--secondary); }
+        .pricing-amount span { font-size: 1rem; font-weight: 400; color: var(--gray-600); }
+        .pricing-features { list-style: none; margin: 2rem 0; text-align: left; }
+        .pricing-features li { padding: 0.75rem 0; display: flex; align-items: center; gap: 0.75rem; }
+        .pricing-features li::before { content: '✓'; color: var(--accent); font-weight: 700; }
+        .contact { padding: 5rem 2rem; background: var(--secondary); }
+        .contact-container { max-width: 600px; margin: 0 auto; background: var(--white); padding: 3rem; border-radius: 20px; }
+        .contact h2 { text-align: center; font-size: 2rem; color: var(--secondary); margin-bottom: 0.5rem; }
+        .contact p { text-align: center; color: var(--gray-600); margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-weight: 600; color: var(--gray-800); margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 10px; font-size: 1rem; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+        .submit-btn { width: 100%; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 1.25rem; border: none; border-radius: 10px; font-size: 1.125rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4); }
+        footer { background: var(--secondary); color: white; padding: 3rem 2rem; text-align: center; }
+        footer p { opacity: 0.7; }
+        @media (max-width: 768px) { .hero h1 { font-size: 2.5rem; } .stats-grid { grid-template-columns: 1fr 1fr; } .roi-content, .security-content { grid-template-columns: 1fr; } .steps-grid { grid-template-columns: 1fr 1fr; } .testimonial-grid, .pricing-cards { grid-template-columns: 1fr; } .trust-badges { flex-direction: column; align-items: center; } }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge">🔒 Enterprise-Grade Security</div>
+            <div class="clawbot-container">
+                <div class="clawbot-head">
+                    <div class="clawbot-antenna"></div>
+                    <div class="clawbot-face">
+                        <div class="clawbot-eye"></div>
+                        <div class="clawbot-eye"></div>
+                    </div>
+                </div>
+                <div class="clawbot-body">
+                    <div class="clawbot-collar"></div>
+                    <div class="clawbot-tie"></div>
+                    <div class="clawbot-chest">
+                        <div class="chest-light green"></div>
+                        <div class="chest-light blue"></div>
+                        <div class="chest-light purple"></div>
+                    </div>
+                </div>
+                <div class="clawbot-shoulders"></div>
+            </div>
+            <h1>Your Clawbot Works 24/7<br><span>So You Can Do What You Love</span></h1>
+            <p class="hero-subtitle">The most secure AI employee for your business. We build, secure, maintain, and update it — so your Clawbot keeps making you money while you focus on what matters.</p>
+            <a href="#contact" class="cta-button">Get Your Free Consultation</a>
+            <div class="trust-badges">
+                <div class="trust-badge"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>HIPAA Compliant</div>
+                <div class="trust-badge"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z"/></svg>Bank-Level Encryption</div>
+                <div class="trust-badge"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/></svg>SOC 2 Certified</div>
+                <div class="trust-badge"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>99.9% Uptime</div>
+            </div>
+        </div>
+    </section>
+    <section class="problem">
+        <div class="problem-content">
+            <h2>The Problem Costs You Every Day</h2>
+            <div class="problem-grid">
+                <div class="problem-card"><div class="problem-card-icon">📞</div><h3>Missed Calls = Lost Revenue</h3><p>Every missed call is a lost customer. They call your competitor instead.</p></div>
+                <div class="problem-card"><div class="problem-card-icon">😴</div><h3>You Can't Work 24/7</h3><p>But your Clawbot can. Nights, weekends, holidays — it never sleeps.</p></div>
+                <div class="problem-card"><div class="problem-card-icon">📋</div><h3>Leads Go Cold</h3><p>You forget to follow up. Prospects move on. Deals disappear.</p></div>
+                <div class="problem-card"><div class="problem-card-icon">💸</div><h3>Every Miss = $100-$500</h3><p>Multiply that by 30 missed calls a month. That's $3,000-$15,000 gone.</p></div>
+            </div>
+        </div>
+    </section>
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-number">97%</div><div class="stat-label">Of Calls Answered</div></div>
+            <div class="stat-card"><div class="stat-number">5 min</div><div class="stat-label">Avg Response Time</div></div>
+            <div class="stat-card"><div class="stat-number">24/7</div><div class="stat-label">Availability</div></div>
+            <div class="stat-card"><div class="stat-number">45%</div><div class="stat-label">More Appointments</div></div>
+        </div>
+    </section>
+    <section class="roi">
+        <div class="roi-content">
+            <div class="roi-text">
+                <h2>Your Clawbot Pays for Itself</h2>
+                <div class="roi-item"><span>Missed Calls/Month</span><span>~30</span></div>
+                <div class="roi-item"><span>Avg Value per Customer</span><span>$500</span></div>
+                <div class="roi-item"><span>Lost Revenue/Month</span><span style="color: #ef4444;">$15,000</span></div>
+                <div class="roi-item"><span>Clawbot Cost/Month</span><span style="color: #10b981;">$1,500</span></div>
+                <div class="roi-highlight"><h3>Your Monthly Profit</h3><div class="amount">$13,500+</div></div>
+            </div>
+            <div class="roi-chart-container"><canvas id="roiChart"></canvas></div>
+        </div>
+    </section>
+    <section class="how-it-works">
+        <div class="section-header"><h2>How Your Clawbot Gets Built</h2><p>We handle everything — from setup to security to ongoing maintenance</p></div>
+        <div class="steps-grid">
+            <div class="step-card"><div class="step-number">1</div><h3>We Build</h3><p>We custom-build your Clawbot with the skills your business needs</p></div>
+            <div class="step-card"><div class="step-number">2</div><h3>We Secure</h3><p>Enterprise encryption, HIPAA compliance, bank-level security</p></div>
+            <div class="step-card"><div class="step-number">3</div><h3>We Deploy</h3><p>We integrate with your phone, calendar, email, and CRM</p></div>
+            <div class="step-card"><div class="step-number">4</div><h3>We Maintain</h3><p>Ongoing updates, security patches, and new skills added monthly</p></div>
+        </div>
+    </section>
+    <section class="security">
+        <div class="security-content">
+            <div>
+                <h2>Your Clawbot is Locked Down</h2>
+                <p style="opacity: 0.7; margin-bottom: 2rem;">We take security seriously. Your data and your business are protected.</p>
+                <ul class="security-list">
+                    <li>Enterprise-grade encryption at rest and in transit</li>
+                    <li>HIPAA compliant data handling</li>
+                    <li>SOC 2 Type II certified infrastructure</li>
+                    <li>24/7 security monitoring</li>
+                    <li>Automatic security updates</li>
+                    <li>Role-based access controls</li>
+                    <li>GDPR compliant</li>
+                    <li>99.9% uptime guaranteed</li>
+                </ul>
+            </div>
+            <div class="security-features">
+                <div class="security-feature"><div class="security-feature-icon">🔐</div><h4>Encrypted</h4><p>256-bit AES encryption</p></div>
+                <div class="security-feature"><div class="security-feature-icon">🛡️</div><h4>Protected</h4><p>Firewall & DDoS protection</p></div>
+                <div class="security-feature"><div class="security-feature-icon">🔄</div><h4>Updated</h4><p>Automatic security patches</p></div>
+                <div class="security-feature"><div class="security-feature-icon">📊</div><h4>Monitored</h4><p>24/7 threat detection</p></div>
+            </div>
+        </div>
+    </section>
+    <section class="testimonials">
+        <div class="section-header"><h2>What Business Owners Say</h2><p>Real results from real businesses</p></div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"We were missing 20+ calls a week. Since getting Clawbot, we've booked an extra 15 appointments monthly. That's $7,500 extra revenue — every month."</p><div class="testimonial-author">Mike R.</div><div class="testimonial-role">Plumbing Company Owner, NJ</div></div>
+            <div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"The security was my biggest concern. Quantum Spark walked me through everything. Now I sleep better at night knowing my data is safe."</p><div class="testimonial-author">Sarah K.</div><div class="testimonial-role">Law Firm Partner, NYC</div></div>
+            <div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"Best investment I've made. Clawbot works while I sleep. It's like hiring an employee that never calls in sick, never takes vacation, and costs 80% less."</p><div class="testimonial-author">David L.</div><div class="testimonial-role">HVAC Company Owner, NY</div></div>
+        </div>
+    </section>
+    <section class="pricing">
+        <div class="section-header"><h2>Simple, Transparent Pricing</h2><p>First month FREE when you sign up this week</p></div>
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <h3>Standard</h3>
+                <div class="pricing-amount">$2,000 <span>setup</span></div>
+                <ul class="pricing-features">
+                    <li>Custom Clawbot Build</li>
+                    <li>Phone System Integration</li>
+                    <li>Calendar & Email Setup</li>
+                    <li>Basic CRM Integration</li>
+                    <li>24/7 Monitoring</li>
+                </ul>
+            </div>
+            <div class="pricing-card featured">
+                <div style="background: var(--accent); color: white; padding: 0.25rem 1rem; border-radius: 20px; display: inline-block; margin-bottom: 1rem; font-size: 0.875rem;">MOST POPULAR</div>
+                <h3>Full Service</h3>
+                <div class="pricing-amount">$1,500 <span>/month</span></div>
+                <ul class="pricing-features">
+                    <li>Everything in Standard</li>
+                    <li>Ongoing Maintenance</li>
+                    <li>Security Updates</li>
+                    <li>New Skills Monthly</li>
+                    <li>Priority Support</li>
+                    <li>Monthly Optimization</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <h2>Ready to Hire Your Clawbot?</h2>
+            <p>Schedule your free consultation. We'll show you exactly how Clawbot can transform your business.</p>
+            <form>
+                <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your name" required></div>
+                <div class="form-group"><label>Company Name</label><input type="text" placeholder="Your company" required></div>
+                <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com" required></div>
+                <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="(555) 123-4567"></div>
+                <div class="form-group"><label>What does your business need?</label><textarea rows="4" placeholder="Tell us about your business..."></textarea></div>
+                <button type="submit" class="submit-btn">Schedule Free Consultation</button>
+            </form>
+        </div>
+    </section>
+    <footer><p>&copy; 2026 Quantum Spark Creative. All rights reserved.</p></footer>
+    <script>
+        const ctx = document.getElementById('roiChart').getContext('2d');
+        new Chart(ctx, { type: 'doughnut', data: { labels: ['Profit After Clawbot', 'Cost'], datasets: [{ data: [90, 10], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] }, options: { plugins: { legend: { position: 'bottom' }, title: { display: true, text: 'Your ROI with Clawbot', font: { size: 16 } } } } });
+    </script>
+</body>
+</html>
